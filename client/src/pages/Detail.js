@@ -14,6 +14,8 @@ import {
 
 import Cart from '../components/Cart';
 
+import { idbPromise } from '../utils/helpers';
+
 function Detail() {
   const [state, dispatch] = useStoreContext();
   const { id } = useParams();
@@ -31,8 +33,19 @@ function Detail() {
 			type: UPDATE_PRODUCTS,
 			products: data.products
 		});
+
+		data.products.forEach(product => {
+			idbPromise('products', 'put', product);
+		});
+	} else if (!loading) {
+		idbPromise('products', 'get').then(products => {
+			dispatch({
+				type: UPDATE_PRODUCTS,
+				products: products
+			});
+		});
 	}
-  }, [products, data, dispatch, id]);
+  }, [products, data, dispatch, id, loading]);
 
   const addToCart = () => {
 	const itemInCart = cart.find(cartItem => cartItem._id === id);
