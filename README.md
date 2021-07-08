@@ -28,8 +28,11 @@ Users are directed to Stripe in order to checkout and complete payment.
 
 ## Technologies Used
 Languages: HTML, CSS, JavaScript, GraphQL
+
 Frameworks: Mongo, Express, React, Node
+
 Libraries: Mongoose, Redux, Apollo, Stripe
+
 ## User Story
 ```
 AS a senior engineer working on an e-commerce platform
