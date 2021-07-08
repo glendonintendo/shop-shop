@@ -7,7 +7,7 @@ import spinner from '../../assets/spinner.gif';
 import { idbPromise } from '../../utils/helpers';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProducts } from '../../features/productsSlice';
+import { updatedProducts } from '../../features/productsSlice';
 
 function ProductList() {
   const { currentCategory } = useSelector(state => state.categories);
@@ -19,7 +19,7 @@ function ProductList() {
   useEffect(() => {
 	  if (productData) {
       console.log(productData.products);
-		  dispatch(updateProducts(productData.products));
+		  dispatch(updatedProducts(productData.products));
       console.log("Dispatched", products);
 
 		  // but let's go also take each product and save it to IndexedDB using the helper function
@@ -30,7 +30,7 @@ function ProductList() {
 		// since we are offline, get all of the data from the 'products' store
 		idbPromise('products', 'get').then(products => {
 			//use received data t oset global state for offline browsing
-			dispatch(updateProducts(products));
+			dispatch(updatedProducts(products));
 		});
 	  }
   }, [productData, loading, dispatch]);

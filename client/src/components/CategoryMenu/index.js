@@ -4,7 +4,7 @@ import { QUERY_CATEGORIES } from '../../utils/queries';
 import { idbPromise } from '../../utils/helpers';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { updateCategories, updateCurrentCategory } from '../../features/categoriesSlice';
+import { updatedCategories, updatedCurrentCategory } from '../../features/categoriesSlice';
 
 function CategoryMenu() {
   const { categories } = useSelector(state => state.categories);
@@ -14,19 +14,19 @@ function CategoryMenu() {
 
   useEffect(() => {
 	  if (categoryData) {
-		  dispatch(updateCategories(categoryData.categories));
+		  dispatch(updatedCategories(categoryData.categories));
 		  categoryData.categories.forEach(category => {
 			  idbPromise('categories', 'put', category);
 		  });
 	  } else if (!loading) {
 		  idbPromise('categories', 'get').then(categories => {
-			  dispatch(updateCategories(categories));
+			  dispatch(updatedCategories(categories));
 		  });
 	  }
   }, [categoryData, loading, dispatch]);
 
   const handleClick = id => {
-	  dispatch(updateCurrentCategory(id));
+	  dispatch(updatedCurrentCategory(id));
   };
 
   return (
