@@ -8,12 +8,12 @@ const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    updateProducts(state, action) {
+    updatedProducts(state, action) {
       state.products = action.payload;
     }
   }
 });
 
-export const { updateProducts } = productsSlice.actions;
+export const { updatedProducts } = productsSlice.actions;
 
 export default productsSlice.reducer;

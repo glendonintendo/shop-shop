@@ -9,15 +9,15 @@ const categoriesSlice = createSlice({
   name: 'categories',
   initialState,
   reducers: {
-    updateCategories(state, action) {
+    updatedCategories(state, action) {
       state.categories = action.payload;
     },
-    updateCurrentCategory(state, action) {
+    updatedCurrentCategory(state, action) {
       state.currentCategory = action.payload;
     }
   }
 });
 
-export const { updateCategories, updateCurrentCategory } = categoriesSlice.actions;
+export const { updatedCategories, updatedCurrentCategory } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;
