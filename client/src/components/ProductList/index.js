@@ -4,21 +4,23 @@ import { useQuery } from '@apollo/client';
 import ProductItem from '../ProductItem';
 import { QUERY_PRODUCTS } from '../../utils/queries';
 import spinner from '../../assets/spinner.gif';
-import { useStoreContext } from '../../utils/GlobalState';
-import { UPDATE_PRODUCTS } from '../../utils/actions';
 import { idbPromise } from '../../utils/helpers';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProducts } from '../../features/productsSlice';
+
 function ProductList() {
-  const [state, dispatch] = useStoreContext();
-  const { currentCategory } = state;
+  const { currentCategory } = useSelector(state => state.categories);
+  const { products } = useSelector(state => state.products);
   const { loading, data: productData } = useQuery(QUERY_PRODUCTS);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
 	  if (productData) {
-		  dispatch({
-			  type: UPDATE_PRODUCTS,
-			  products: productData.products
-		  });
+      console.log(productData.products);
+		  dispatch(updateProducts(productData.products));
+      console.log("Dispatched", products);
 
 		  // but let's go also take each product and save it to IndexedDB using the helper function
 		  productData.products.forEach(product => {
@@ -28,26 +30,23 @@ function ProductList() {
 		// since we are offline, get all of the data from the 'products' store
 		idbPromise('products', 'get').then(products => {
 			//use received data t oset global state for offline browsing
-			dispatch({
-				type: UPDATE_PRODUCTS,
-				products: products
-			});
+			dispatch(updateProducts(products));
 		});
 	  }
   }, [productData, loading, dispatch]);
 
   function filterProducts() {
 	  if (!currentCategory) {
-		  return state.products;
+		  return products;
 	  }
 
-	  return state.products.filter(product => product.category._id === currentCategory);
+	  return products.filter(product => product.category._id === currentCategory);
   }
 
   return (
     <div className="my-2">
       <h2>Our Products:</h2>
-      {state.products.length ? (
+      {products.length ? (
         <div className="flex-row">
           {filterProducts().map((product) => (
             <ProductItem
